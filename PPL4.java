@@ -26,35 +26,20 @@ class Vehicle {
 }
 
 class Car extends Vehicle {
-    Car(String name, double rate) {
-        super("Car", name, rate);
-    }
-
-    @Override
-    double calculateRent(int days) {
-        return ratePerDay * days;
+    Car(String name) {
+        super("Car", name, 2000);   
     }
 }
 
 class Bike extends Vehicle {
-    Bike(String name, double rate) {
-        super("Bike", name, rate);
-    }
-
-    @Override
-    double calculateRent(int days) {
-        return ratePerDay * days;
+    Bike(String name) {
+        super("Bike", name, 800);   
     }
 }
 
 class Truck extends Vehicle {
-    Truck(String name, double rate) {
-        super("Truck", name, rate);
-    }
-
-    @Override
-    double calculateRent(int days) {
-        return ratePerDay * days;
+    Truck(String name) {
+        super("Truck", name, 5000); 
     }
 }
 
@@ -72,57 +57,40 @@ public class VehicleRentalSystem {
         int choice = sc.nextInt();
         sc.nextLine();
 
+        Vehicle v = null;
+
         switch (choice) {
 
-            case 1: {
-                System.out.println("\nEnter Car Details");
+            case 1:
                 System.out.print("Enter car name: ");
-                String name = sc.nextLine();
-                System.out.print("Enter rate per day: ");
-                double rate = sc.nextDouble();
-                System.out.print("Enter rental days: ");
-                int days = sc.nextInt();
-
-                Vehicle v = new Car(name, rate);
-                double total = v.calculateRent(days);
-                v.display(days, total);
+                String carName = sc.nextLine();
+                v = new Car(carName);
                 break;
-            }
 
-            case 2: {
-                System.out.println("\nEnter Bike Details");
+            case 2:
                 System.out.print("Enter bike name: ");
-                String name = sc.nextLine();
-                System.out.print("Enter rate per day: ");
-                double rate = sc.nextDouble();
-                System.out.print("Enter rental days: ");
-                int days = sc.nextInt();
-
-                Vehicle v = new Bike(name, rate);
-                double total = v.calculateRent(days);
-                v.display(days, total);
+                String bikeName = sc.nextLine();
+                v = new Bike(bikeName);
                 break;
-            }
 
-            case 3: {
-                System.out.println("\nEnter Truck Details");
+            case 3:
                 System.out.print("Enter truck name: ");
-                String name = sc.nextLine();
-                System.out.print("Enter rate per day: ");
-                double rate = sc.nextDouble();
-                System.out.print("Enter rental days: ");
-                int days = sc.nextInt();
-
-                Vehicle v = new Truck(name, rate);
-                double total = v.calculateRent(days);
-                v.display(days, total);
+                String truckName = sc.nextLine();
+                v = new Truck(truckName);
                 break;
-            }
 
             default:
                 System.out.println("Invalid choice");
+                sc.close();
+                return;
         }
 
-        sc.close();
+        System.out.print("Enter rental days: ");
+        int days = sc.nextInt();
+
+        double total = v.calculateRent(days);
+        v.display(days, total);
+
+        
     }
 }
