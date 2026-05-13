@@ -1,155 +1,167 @@
+package javapr;
+
 import java.util.Scanner;
 
-// Custom Exceptions
+//Custom Exceptions
 class BookNotFoundException extends Exception {
-    public BookNotFoundException(String message) { super(message); }
+ public BookNotFoundException(String message) { super(message); }
 }
 
 class InvalidReturnDateException extends Exception {
-    public InvalidReturnDateException(String message) { super(message); }
+ public InvalidReturnDateException(String message) { super(message); }
 }
 
 class BookAlreadyCheckedOutException extends Exception {
-    public BookAlreadyCheckedOutException(String message) { super(message); }
+ public BookAlreadyCheckedOutException(String message) { super(message); }
 }
 
 class BookNotIssuedException extends Exception {
-    public BookNotIssuedException(String message) { super(message); }
+ public BookNotIssuedException(String message) { super(message); }
 }
 
-// Book Class
+//Book Class
 class Book {
-    int bookid;
-    String title;
-    boolean isCheckedOut;
+ int bookid;
+ String title;
+ boolean isCheckedOut;
 
-    Book(int bookid, String title, boolean isCheckedOut) {
-        this.bookid = bookid;
-        this.title = title;
-        this.isCheckedOut = isCheckedOut;
-    }
+ Book(int bookid, String title, boolean isCheckedOut) {
+     this.bookid = bookid;
+     this.title = title;
+     this.isCheckedOut = isCheckedOut;
+ }
 }
 
-// Library Class
+//Library Class
 class Library {
-    Book[] books;
+ Book[] books;
 
-    public Library(Book[] books) {
-        this.books = books;
-    }
+ public Library(Book[] books) {
+     this.books = books;
+ }
 
-    public Book findBook(String title) throws BookNotFoundException {
-        for (Book book : books) {
-            if (book.title.equalsIgnoreCase(title)) {
-                return book;
-            }
-        }
-        throw new BookNotFoundException("Book not found!");
-    }
+ public Book findBook(String title) throws BookNotFoundException {
+     for (Book book : books) {
+         if (book.title.equalsIgnoreCase(title)) {
+             return book;
+         }
+     }
+     throw new BookNotFoundException("Book not found!");
+ }
 
-    public void checkOutBook(String title)
-            throws BookNotFoundException, BookAlreadyCheckedOutException {
+ public void checkOutBook(String title)
+         throws BookNotFoundException, BookAlreadyCheckedOutException {
 
-        Book book = findBook(title);
+     Book book = findBook(title);
 
-        if (book.isCheckedOut) {
-            throw new BookAlreadyCheckedOutException("Book already checked out!");
-        }
+     if (book.isCheckedOut) {
+         throw new BookAlreadyCheckedOutException("Book already checked out!");
+     }
 
-        book.isCheckedOut = true;
-        System.out.println("Book issued successfully.");
-    }
+     book.isCheckedOut = true;
+     System.out.println("Book issued successfully.");
+ }
 
-    public void returnBook(String title, int daysLate)
-            throws BookNotFoundException, InvalidReturnDateException, BookNotIssuedException {
+ public void returnBook(String title, int daysLate)
+         throws BookNotFoundException, InvalidReturnDateException, BookNotIssuedException {
 
-        Book book = findBook(title);
+     Book book = findBook(title);
 
-        if (daysLate < 0) {
-            throw new InvalidReturnDateException("Invalid return days!");
-        }
+     
+     if (daysLate < 0) {
+         throw new InvalidReturnDateException("Invalid return days!");
+     }
 
-        if (!book.isCheckedOut) {
-            throw new BookNotIssuedException("Book was not issued!");
-        }
+     if (!book.isCheckedOut) {
+         throw new BookNotIssuedException("Book was not issued!");
+     }
 
-        book.isCheckedOut = false;
-        System.out.println("Book returned successfully.");
-    }
+     book.isCheckedOut = false;
 
-    public void displayBooks() {
-        for (Book b : books) {
-            System.out.println(b.title + " - " +
-                    (b.isCheckedOut ? "Issued" : "Available"));
-        }
-    }
+     int fine = 0;
+
+     if (daysLate > 0) {
+         fine = daysLate * 5; // ₹5 per day
+         System.out.println("Book returned successfully.");
+         System.out.println("Late fine: Rs." + fine);
+     } else {
+         System.out.println("Book returned successfully.");
+         System.out.println("No fine.");
+     }
+ }
+
+ public void displayBooks() {
+     for (Book b : books) {
+         System.out.println(b.title + " - " +
+                 (b.isCheckedOut ? "Issued" : "Available"));
+     }
+ }
 }
 
-// Main Class
+//Main Class
 public class prct5 {
-    public static void main(String[] args) {
+ public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+     Scanner sc = new Scanner(System.in);
 
-        Book[] books = {
-            new Book(1, "Java Programming", false),
-            new Book(2, "Python Programming", true),
-            new Book(3, "JavaScript Programming", false),
-            new Book(4, "C++ Programming", false)
-        };
+     Book[] books = {
+         new Book(1, "Java Programming", false),
+         new Book(2, "Python Programming", true),
+         new Book(3, "JavaScript Programming", false),
+         new Book(4, "C++ Programming", false)
+     };
 
-        Library library = new Library(books);
+     Library library = new Library(books);
 
-        while (true) {
-            System.out.println("\n1. Search Book");
-            System.out.println("2. Issue Book");
-            System.out.println("3. Return Book");
-            System.out.println("4. Display Books");
-            System.out.println("5. Exit");
-            System.out.print("Enter choice: ");
+     while (true) {
+         System.out.println("\n1. Search Book");
+         System.out.println("2. Issue Book");
+         System.out.println("3. Return Book");
+         System.out.println("4. Display Books");
+         System.out.println("5. Exit");
+         System.out.print("Enter choice: ");
 
-            int choice = sc.nextInt();
-            sc.nextLine();
+         int choice = sc.nextInt();
+         sc.nextLine();
 
-            try {
-                switch (choice) {
+         try {
+             switch (choice) {
 
-                    case 1:
-                        System.out.print("Enter title: ");
-                        String t1 = sc.nextLine();
-                        library.findBook(t1);
-                        System.out.println("Book found!");
-                        break;
+                 case 1:
+                     System.out.print("Enter title: ");
+                     String t1 = sc.nextLine();
+                     library.findBook(t1);
+                     System.out.println("Book found!");
+                     break;
 
-                    case 2:
-                        System.out.print("Enter title: ");
-                        String t2 = sc.nextLine();
-                        library.checkOutBook(t2);
-                        break;
+                 case 2:
+                     System.out.print("Enter title: ");
+                     String t2 = sc.nextLine();
+                     library.checkOutBook(t2);
+                     break;
 
-                    case 3:
-                        System.out.print("Enter title: ");
-                        String t3 = sc.nextLine();
-                        System.out.print("Enter late days: ");
-                        int days = sc.nextInt();
-                        library.returnBook(t3, days);
-                        break;
+                 case 3:
+                     System.out.print("Enter title: ");
+                     String t3 = sc.nextLine();
+                     System.out.print("Enter late days: ");
+                     int days = sc.nextInt();
+                     library.returnBook(t3, days);
+                     break;
 
-                    case 4:
-                        library.displayBooks();
-                        break;
+                 case 4:
+                     library.displayBooks();
+                     break;
 
-                    case 5:
-                        System.exit(0);
+                 case 5:
+                     System.exit(0);
 
-                    default:
-                        System.out.println("Invalid choice!");
-                }
+                 default:
+                     System.out.println("Invalid choice!");
+             }
 
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
-    }
+         } catch (Exception e) {
+             System.out.println("Error: " + e.getMessage());
+         }
+     }
+ }
 }
-
